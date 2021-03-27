@@ -32,14 +32,19 @@ const posts = require("./routes/api/posts");
 
 app.use("/api/", posts);
 
-// const io = require("socket.io")(server);
+const port = process.env.PORT || 8081;
+const server = app.listen(port, () =>
+  console.log(`Server started on port ${port}!`)
+);
 
-// io.on("connection", function (socket) {
-//   console.log(socket.id);
-//   socket.on("SEND_MESSAGE", function (data) {
-//     io.emit("MESSAGE", data);
-//   });
-// });
+const io = require("socket.io")(server);
+
+io.on("connection", function (socket) {
+  console.log(socket.id);
+  socket.on("SEND_MESSAGE", function (data) {
+    io.emit("MESSAGE", data);
+  });
+});
 console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV === "production") {
@@ -49,5 +54,3 @@ if (process.env.NODE_ENV === "production") {
   // Handle SPA
   app.get(/.*/, (req, res) => res.sendFile(__dirname + "/public/index.html"));
 }
-const port = process.env.PORT || 8081;
-app.listen(port, () => console.log(`Server started on port ${port}!`));
