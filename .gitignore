@@ -1,6 +1,5 @@
-client/node_modules/
-server/node_modules/
+client/
 /.vs
-server/.env
+.env
 node_modules
 package-lock.json
