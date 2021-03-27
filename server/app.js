@@ -7,21 +7,21 @@ require("dotenv").config();
 
 var SqlString = require("sqlstring");
 
-const db = mysql.createConnection({
-  host: process.env.RDS_HOSTNAME,
-  user: process.env.RDS_USERNAME,
-  password: process.env.RDS_PASSWORD,
-  port: process.env.RDS_PORT,
-  database: process.env.RDS_DB_NAME,
-  multipleStatements: true,
-});
+// const db = mysql.createConnection({
+//   host: process.env.RDS_HOSTNAME,
+//   user: process.env.RDS_USERNAME,
+//   password: process.env.RDS_PASSWORD,
+//   port: process.env.RDS_PORT,
+//   database: process.env.RDS_DB_NAME,
+//   multipleStatements: true,
+// });
 
-db.connect((err) => {
-  if (err) {
-    throw err;
-  }
-  console.log("Mysql connected...");
-});
+// db.connect((err) => {
+//   if (err) {
+//     throw err;
+//   }
+//   console.log("Mysql connected...");
+// });
 
 const app = express();
 app.use(morgan("combined"));
