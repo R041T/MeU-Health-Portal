@@ -124,14 +124,14 @@ app.get("/ViewDoctor/:DoctorId", (req, res) => {
   });
 });
 
-const io = require("socket.io")(server);
+// const io = require("socket.io")(server);
 
-io.on("connection", function (socket) {
-  console.log(socket.id);
-  socket.on("SEND_MESSAGE", function (data) {
-    io.emit("MESSAGE", data);
-  });
-});
+// io.on("connection", function (socket) {
+//   console.log(socket.id);
+//   socket.on("SEND_MESSAGE", function (data) {
+//     io.emit("MESSAGE", data);
+//   });
+// });
 console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV === "production") {
