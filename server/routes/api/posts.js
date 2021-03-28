@@ -9,7 +9,7 @@ const db = mysql.createConnection({
   password: process.env.RDS_PASSWORD,
   port: process.env.RDS_PORT,
   database: process.env.RDS_DB_NAME,
-  multipleStatements: true,
+  multipleStatements: false,
 });
 
 db.connect((err) => {
@@ -20,16 +20,16 @@ db.connect((err) => {
 });
 
 router.post("/register", (req, res) => {
-  let sql = `insert into signup value('${req.body.email}','${req.body.password}') `;
-  db.query(sql, (err, result) => {
+  let sql = `insert into signup value('?','?') `;
+  db.query(sql, [req.body.email, req.body.password], (err, result) => {
     if (err) throw err;
   });
 });
 
 router.post("/login", (req, res) => {
   console.log("login reached");
-  let sql = `select password from signup where email = '${req.body.email}' `;
-  db.query(sql, (err, result) => {
+  let sql = `select password from signup where email = ? `;
+  db.query(sql, [req.body.email], (err, result) => {
     if (err) throw err;
     if (req.body.password == result[0].password) {
       res.send(true);
@@ -59,16 +59,16 @@ router.get("/Hospitals", (req, res) => {
   });
 });
 
-router.get("/ViewArticle/:ArticleId", (req, res) => {
-  let sql = `select * from article where id = ${req.params.ArticleId}`;
-  console.log(sql);
-  db.query(sql, (err, result) => {
-    console.log(result);
+// router.get("/ViewArticle/:ArticleId", (req, res) => {
+//   let sql = `select * from article where id = ${req.params.ArticleId}`;
+//   console.log(sql);
+//   db.query(sql, (err, result) => {
+//     console.log(result);
 
-    if (err) throw err;
-    res.send(result);
-  });
-});
+//     if (err) throw err;
+//     res.send(result);
+//   });
+// });
 
 router.get("/ViewArticle/:ArticleId", (req, res) => {
   let sql = `select * from article where id = ?`;
@@ -96,8 +96,8 @@ router.get("/ViewArticle/:ArticleId", (req, res) => {
 router.get("/ViewHospital/:HospitalId", (req, res) => {
   //let id = JSON.stringify(req.params);
   //res.send(req.params);
-  let sql = `select * from hospital where id = ${req.params.HospitalId}`;
-  db.query(sql, (err, result) => {
+  let sql = `select * from hospital where id = ?`;
+  db.query(sql, [req.params.HospitalId], (err, result) => {
     if (err) throw err;
     res.send(result);
   });
@@ -105,8 +105,8 @@ router.get("/ViewHospital/:HospitalId", (req, res) => {
 router.get("/ViewDoctor/:DoctorId", (req, res) => {
   //let id = JSON.stringify(req.params);
   //res.send(req.params);
-  let sql = `select * from doctor where id = ${req.params.DoctorId}`;
-  db.query(sql, (err, result) => {
+  let sql = `select * from doctor where id = ?`;
+  db.query(sql, [req.params.DoctorId], (err, result) => {
     if (err) throw err;
     res.send(result);
   });

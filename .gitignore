@@ -2,3 +2,4 @@ client/
 /.vs
 .env
 node_modules
+.snyk
