@@ -20,7 +20,7 @@ db.connect((err) => {
 });
 
 router.post("/register", (req, res) => {
-  let sql = `insert into signup value('?','?') `;
+  let sql = `insert into signup value(?,?) `;
   db.query(sql, [req.body.email, req.body.password], (err, result) => {
     if (err) throw err;
   });
