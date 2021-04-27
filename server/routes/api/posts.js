@@ -1,7 +1,7 @@
 const express = require("express");
 const mysql = require("mysql");
 const router = express.Router();
-//const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 const app = express();
 const cors = require("cors");
 var session = require("express-session");
@@ -28,8 +28,8 @@ var db = require("./database_conn");
 
 router.post("/register", async (req, res) => {
   try {
-    // const salt = await bcrypt.genSalt();
-    // const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
     // console.log(salt);
     // console.log(hashedPassword);
     let sql = `insert into signup value(?,?) `;
@@ -55,20 +55,20 @@ router.post("/login", (req, res) => {
     let sql = `select email, password from signup where email = ? `;
     db.query(sql, [req.body.email], async (err, result) => {
       if (err) throw err;
-      // if (await bcrypt.compare(req.body.password, result[0].password)) {
-      //   console.log(req.session);
-      //   console.log("in here");
-      //   if (!req.session.UserId) {
-      //     req.session.UserId = result[0].email;
-      //     res.send({
-      //       authenticated: true,
-      //       userId: req.session.UserId,
-      //     });
-      //   }
-      // } else res.send(false);
+      if (await bcrypt.compare(req.body.password, result[0].password)) {
+        console.log(req.session);
+        console.log("in here");
+        if (!req.session.UserId) {
+          req.session.UserId = result[0].email;
+          res.send({
+            authenticated: true,
+            userId: req.session.UserId,
+          });
+        }
+      } else res.send(false);
       //console.log(req.body.password);
       //console.log(result[0].password);
-      console.log(req.csrfToken);
+      // console.log(req.csrfToken);
     });
   } catch (error) {
     res.status(500).send();
