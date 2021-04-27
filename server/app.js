@@ -57,21 +57,21 @@ var options = {
   port: process.env.RDS_PORT,
 };
 
-// var sessionStore = new MySQLStore(options, db);
-// app.use(
-//   session({
-//     cookie: {
-//       maxAge: SESS_LIFETIME,
-//       sameSite: true,
-//       secure: false,
-//     },
-//     store: sessionStore,
-//     name: process.env.SESS_NAME,
-//     secret: process.env.SESS_KEY,
-//     resave: false,
-//     saveUninitialized: false,
-//   })
-// );
+var sessionStore = new MySQLStore(options, db);
+app.use(
+  session({
+    cookie: {
+      maxAge: SESS_LIFETIME,
+      sameSite: true,
+      secure: false,
+    },
+    store: sessionStore,
+    name: process.env.SESS_NAME,
+    secret: process.env.SESS_KEY,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 //const csrfProtection = csrf();
 //app.use(csrfProtection);
 
