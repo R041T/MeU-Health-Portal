@@ -69,6 +69,7 @@ app.use(
     name: process.env.SESS_NAME,
     secret: process.env.SESS_KEY,
     resave: false,
+    proxy: false,
     saveUninitialized: false,
   })
 );
