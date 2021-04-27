@@ -55,9 +55,6 @@ router.post("/login", (req, res) => {
     let sql = `select email, password from signup where email = ? `;
     db.query(sql, [req.body.email], async (err, result) => {
       if (err) throw err;
-      console.log(req.body.password);
-      console.log(result[0].password);
-      await console.log(bcrypt.compare(req.body.password, result[0].password));
       if (await bcrypt.compare(req.body.password, result[0].password)) {
         console.log(req.session);
         console.log("in here");
