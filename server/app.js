@@ -78,12 +78,7 @@ const server = app.listen(port, () =>
   console.log(`Server started on port ${port}!`)
 );
 
-const io = require("socket.io")(server, {
-  cors: {
-    origin: "http://localhost:8080",
-    methods: ["GET", "POST"],
-  },
-});
+const io = require("socket.io")(server);
 
 io.on("connection", function (socket) {
   console.log("connected");
