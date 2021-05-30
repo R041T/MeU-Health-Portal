@@ -49,6 +49,61 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.post("/getslot", async (req, res) => {
+  try {
+    let sql = ` select * from appointment where id=${req.body.id} `;
+    db.query(sql, (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    });
+  } catch (error) {
+    res.status(500).send();
+  }
+});
+
+router.post("/getapp", async (req, res) => {
+  try {
+    let sql = ` select appointment.dateofapp,appointment.timeslot,docname,image from appointment,doctor where appointment.id=doctor.id and appointment.userid=? `;
+    db.query(sql, [req.body.userid], (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    });
+  } catch (error) {
+    res.status(500).send();
+  }
+});
+router.post("/cancelapp", async (req, res) => {
+  try {
+    // console.log(req.body);
+    let sql = `delete from appointment where dateofapp = ? and timeslot=? and userid=?`;
+    db.query(
+      sql,
+      [req.body.date, req.body.slot, req.body.userid],
+      (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      }
+    );
+  } catch (error) {
+    res.status(500).send();
+  }
+});
+
+router.post("/book", async (req, res) => {
+  try {
+    let sql = `insert into appointment value(?,?,?,?)`;
+    db.query(
+      sql,
+      [req.body.docid, req.body.date, req.body.slot, req.body.userid],
+      (err, result) => {
+        if (err) throw err;
+      }
+    );
+  } catch (error) {
+    res.status(500).send();
+  }
+});
+
 router.post("/login", (req, res) => {
   try {
     //console.log("login reached");
@@ -110,7 +165,7 @@ router.get("/Hospitals", (req, res) => {
 
 router.get("/ViewArticle/:ArticleId", (req, res) => {
   let sql = `select * from article where id = ?`;
-  console.log(sql);
+  // console.log(sql);
   db.query(sql, [req.params.ArticleId], (err, result) => {
     console.log(result);
 
